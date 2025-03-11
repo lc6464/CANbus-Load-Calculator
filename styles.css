@@ -1,0 +1,293 @@
+:root {
+    /* 基础尺寸 */
+    --base-font-size: 16px;
+    --base-spacing: 1rem;
+
+    /* 色彩方案 - 亮色模式 */
+    --color-primary: #1a73e8;
+    --color-primary-dark: #0d62c9;
+    --color-text: #333;
+    --color-text-light: #666;
+    --color-background: #f5f5f5;
+    --color-card: #fff;
+    --color-border: #e0e0e0;
+    --color-input-border: #ccc;
+    --color-table-header: #f2f2f2;
+    --color-section-bg: #f9f9f9;
+
+    /* 状态颜色 */
+    --color-success: #52c41a;
+    --color-warning: #faad14;
+    --color-danger: #ff4d4f;
+    --color-danger-dark: #ff1f1f;
+
+    /* 阴影 */
+    --shadow-default: 0 0 1.25rem rgba(0, 0, 0, 0.1);
+
+    /* 圆角 */
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.625rem;
+}
+
+/* 深色模式 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-primary: #4285f4;
+        --color-primary-dark: #5c9aff;
+        --color-text: #e0e0e0;
+        --color-text-light: #b0b0b0;
+        --color-background: #121212;
+        --color-card: #1e1e1e;
+        --color-border: #333;
+        --color-input-border: #444;
+        --color-table-header: #2a2a2a;
+        --color-section-bg: #1a1a1a;
+
+        /* 状态颜色 - 深色模式下稍微调亮 */
+        --color-success: #67d631;
+        --color-warning: #ffbe2e;
+        --color-danger: #ff6b6b;
+        --color-danger-dark: #ff4040;
+
+        /* 阴影 - 深色模式下反色 */
+        --shadow-default: 0 0 1.25rem rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* 全局样式 */
+html {
+    font-size: var(--base-font-size);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--color-background);
+    padding: 1.25rem;
+    color: var(--color-text);
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 75rem;
+    margin: 0 auto;
+    background-color: var(--color-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-default);
+    padding: 1.875rem;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.875rem;
+    color: var(--color-primary);
+    border-bottom: 0.125rem solid var(--color-border);
+    padding-bottom: 0.9375rem;
+}
+
+h2 {
+    color: var(--color-primary);
+    margin: 1.25rem 0 0.9375rem 0;
+    padding-bottom: 0.625rem;
+    border-bottom: 0.0625rem solid var(--color-border);
+}
+
+h3 {
+    color: var(--color-text);
+    margin: 1rem 0 0.5rem;
+}
+
+/* 说明区域样式 */
+.info-section {
+    margin-bottom: 1.875rem;
+    background-color: var(--color-section-bg);
+    padding: 0.9375rem;
+    border-radius: var(--border-radius-md);
+    border-left: 0.25rem solid var(--color-primary);
+}
+
+.info-content {
+    line-height: 1.6;
+}
+
+.info-content p,
+.info-content ul {
+    margin-bottom: 0.9375rem;
+}
+
+.info-content ul {
+    padding-left: 1.25rem;
+}
+
+.info-content a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.info-content a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* 计算器区域样式 */
+.calculator-section {
+    margin-bottom: 1.875rem;
+}
+
+.baud-rate-container {
+    margin-bottom: 1.25rem;
+    padding: 0.625rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.baud-rate-container label {
+    margin-right: 0.625rem;
+    font-weight: bold;
+}
+
+.baud-rate-container input {
+    padding: 0.5rem;
+    border: 0.0625rem solid var(--color-input-border);
+    border-radius: var(--border-radius-sm);
+    width: 9.375rem;
+    background-color: var(--color-card);
+    color: var(--color-text);
+}
+
+.table-container {
+    margin-bottom: 1.25rem;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.9375rem;
+}
+
+th,
+td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 0.0625rem solid var(--color-border);
+}
+
+th {
+    background-color: var(--color-table-header);
+    font-weight: bold;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.0625rem solid var(--color-input-border);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-card);
+    color: var(--color-text);
+}
+
+button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.625rem 0.9375rem;
+    margin-right: 0.625rem;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.delete-button {
+    background-color: var(--color-danger);
+}
+
+.delete-button:hover {
+    background-color: var(--color-danger-dark);
+}
+
+/* 结果区域样式 */
+.result-container {
+    background-color: var(--color-section-bg);
+    padding: 1.25rem;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+}
+
+.result {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.625rem 0;
+    color: var(--color-primary);
+}
+
+.status-indicator {
+    height: 1.25rem;
+    background-color: var(--color-border);
+    border-radius: 0.625rem;
+    margin: 0.9375rem 0;
+    overflow: hidden;
+}
+
+#load-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-success);
+    transition: width 0.5s, background-color 0.5s;
+}
+
+/* 响应式设计 */
+@media (max-width: 48rem) { /* 768px */
+    .container {
+        padding: 0.9375rem;
+    }
+
+    .baud-rate-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .baud-rate-container label {
+        margin-bottom: 0.3125rem;
+    }
+
+    .baud-rate-container input {
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 0.5rem 0.3125rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .result {
+        font-size: 1.5rem;
+    }
+}
+
+/* 焦点状态增强可访问性 */
+input:focus,
+button:focus {
+    outline: 0.1875rem solid var(--color-primary);
+    outline-offset: 0.125rem;
+}

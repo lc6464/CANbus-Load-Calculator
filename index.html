@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta author="LC" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAN 总线负载计算器</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer type="module" src="main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CAN 总线负载计算器</h1>
+
+        <!-- 说明区域 -->
+        <section class="info-section">
+            <h2>工具说明</h2>
+            <div class="info-content">
+                <p>感谢 西南石油大学-铁人 制作的
+                    <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">Excel
+                        表格</a>，此网页中的算法由 Claude
+                    根据该表格编写，并由 <a href="https://lcwebsite.cn" target="_blank" title="LC的网站">LC</a>
+                    人工验证。
+                </p>
+                <p>一般 CAN 总线负载在 80% 以内都是安全的，再高就要考虑各种干扰的影响了，有概率会开始丢包。</p>
+                <p>尽可能将多个不足 8 字节的包合并为一个数据帧，可以减少帧头帧尾的数量，以提高总线利用率。</p>
+                <p>在计算器中给出的一个一拖四 7 电机计算样例——7 电机反馈频率 1000Hz，控制频率 500Hz 的极限情况下是可以控制的，但具体情况还需要考虑布线方式、总线电阻等多方面因素，实际负载会偏高。
+                </p>
+                <h3>常见帧类型说明：</h3>
+                <ul>
+                    <li>一拖四协议的电机：反馈帧 8 字节，一条控制帧内每个电机 2 字节，上限 8 字节，即 4 电机。不足 4
+                        电机时缩短数据段长度能有效提高利用率。</li>
+                    <li>达妙电机 MIT 模式：反馈帧 8 字节，控制帧 8 字节，一收一发，反馈帧频率随控制帧频率变化。</li>
+                </ul>
+                <p>请确保在输入区域中正确设置波特率，以便计算实际负载。</p>
+            </div>
+        </section>
+
+        <!-- 输入区域 -->
+        <section class="calculator-section">
+            <h2>计算器</h2>
+
+            <!-- 波特率设置 -->
+            <div class="baud-rate-container">
+                <label for="baud-rate">波特率 (bps):</label>
+                <input type="number" id="baud-rate" value="1000000" min="1" max="1000000">
+            </div>
+
+            <!-- CAN消息表格 -->
+            <div class="table-container">
+                <table id="can-messages-table">
+                    <thead>
+                        <tr>
+                            <th>发送频率 (Hz)</th>
+                            <th>数据段长度</th>
+                            <th>相同帧数量</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JavaScript 将在这里动态添加行 -->
+                    </tbody>
+                </table>
+                <button id="add-row-button">添加新消息</button>
+                <button id="reset-button">重设整个计算器</button>
+            </div>
+
+            <!-- 结果显示 -->
+            <div class="result-container">
+                <h3>总线负载:</h3>
+                <div id="load-result" class="result">0%</div>
+                <div class="status-indicator">
+                    <div id="load-bar"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+
+</html>
