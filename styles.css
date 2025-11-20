@@ -16,10 +16,23 @@
     --color-section-bg: #f9f9f9;
 
     /* 状态颜色 */
-    --color-success: #52c41a;
+    --color-success: #1a7f37;
+    --color-success-hover: #2ea043;
     --color-warning: #faad14;
     --color-danger: #ff4d4f;
     --color-danger-dark: #ff1f1f;
+
+    /* 可视化颜色 */
+    --color-canmessage-visualizer-bit-sof: rgba(241, 196, 15, 0.3);
+    --color-canmessage-visualizer-bit-arbitration: rgba(230, 126, 34, 0.3);
+    --color-canmessage-visualizer-bit-control: rgba(52, 152, 219, 0.3);
+    --color-canmessage-visualizer-bit-data: rgba(46, 204, 113, 0.3);
+    --color-canmessage-visualizer-bit-data-alt: rgba(52, 152, 219, 0.4);
+    --color-canmessage-visualizer-bit-crc: rgba(155, 89, 182, 0.3);
+    --color-canmessage-visualizer-bit-ack: rgba(26, 188, 156, 0.3);
+    --color-canmessage-visualizer-bit-eof: rgba(149, 165, 166, 0.3);
+    --color-canmessage-visualizer-bit-ifs: rgba(210, 215, 211, 0.3);
+    --color-canmessage-visualizer-bit-stuff: rgba(231, 76, 60, 0.5);
 
     /* 阴影 */
     --shadow-default: 0 0 1.25rem rgba(0, 0, 0, 0.1);
@@ -45,10 +58,23 @@
         --color-section-bg: #1a1a1a;
 
         /* 状态颜色 - 深色模式下稍微调亮 */
-        --color-success: #67d631;
+        --color-success: #238636;
+        --color-success-hover: #2ea043;
         --color-warning: #ffbe2e;
-        --color-danger: #ff6b6b;
-        --color-danger-dark: #ff4040;
+        --color-danger: #ff4d4f;
+        --color-danger-dark: #ff1f1f;
+
+        /* 可视化颜色 - 深色模式下保持一致 */
+        --color-canmessage-visualizer-bit-sof: rgba(241, 196, 15, 0.3);
+        --color-canmessage-visualizer-bit-arbitration: rgba(230, 126, 34, 0.3);
+        --color-canmessage-visualizer-bit-control: rgba(52, 152, 219, 0.3);
+        --color-canmessage-visualizer-bit-data: rgba(46, 204, 113, 0.3);
+        --color-canmessage-visualizer-bit-data-alt: rgba(52, 152, 219, 0.4);
+        --color-canmessage-visualizer-bit-crc: rgba(155, 89, 182, 0.3);
+        --color-canmessage-visualizer-bit-ack: rgba(26, 188, 156, 0.3);
+        --color-canmessage-visualizer-bit-eof: rgba(149, 165, 166, 0.3);
+        --color-canmessage-visualizer-bit-ifs: rgba(210, 215, 211, 0.3);
+        --color-canmessage-visualizer-bit-stuff: rgba(231, 76, 60, 0.5);
 
         /* 阴影 - 深色模式下反色 */
         --shadow-default: 0 0 1.25rem rgba(255, 255, 255, 0.1);
@@ -342,7 +368,48 @@ button:hover {
 }
 
 .visualize-button:hover {
-    background-color: #45a049;
+    background-color: var(--color-success-hover);
+}
+
+/* 可视化位单元格样式 */
+.bit-cell[data-type="SOF"] {
+    background-color: var(--color-canmessage-visualizer-bit-sof) ;
+}
+
+.bit-cell[data-type="ARBITRATION"] {
+    background-color: var(--color-canmessage-visualizer-bit-arbitration) ;
+}
+
+.bit-cell[data-type="CONTROL"] {
+    background-color: var(--color-canmessage-visualizer-bit-control) ;
+}
+
+.bit-cell[data-type="DATA"] {
+    background-color: var(--color-canmessage-visualizer-bit-data) ;
+}
+
+.bit-cell[data-type="DATA"][data-alt="true"] {
+    background-color: var(--color-canmessage-visualizer-bit-data-alt) ;
+}
+
+.bit-cell[data-type="CRC"] {
+    background-color: var(--color-canmessage-visualizer-bit-crc) ;
+}
+
+.bit-cell[data-type="ACK"] {
+    background-color: var(--color-canmessage-visualizer-bit-ack) ;
+}
+
+.bit-cell[data-type="EOF"] {
+    background-color: var(--color-canmessage-visualizer-bit-eof) ;
+}
+
+.bit-cell[data-type="IFS"] {
+    background-color: var(--color-canmessage-visualizer-bit-ifs) ;
+}
+
+.bit-cell[data-type="STUFF"] {
+    background-color: var(--color-canmessage-visualizer-bit-stuff) ;
 }
 
 
