@@ -296,6 +296,22 @@ button:hover {
     color: var(--color-primary);
 }
 
+.result[data-status="primary"] {
+    color: var(--color-primary);
+}
+
+.result[data-status="success"] {
+    color: var(--color-success);
+}
+
+.result[data-status="warning"] {
+    color: var(--color-warning);
+}
+
+.result[data-status="danger"] {
+    color: var(--color-danger);
+}
+
 .status-indicator {
     height: 1.25rem;
     background-color: var(--color-border);
@@ -307,8 +323,24 @@ button:hover {
 #load-bar {
     height: 100%;
     width: 0%;
-    background-color: var(--color-success);
+    background-color: var(--color-primary);
     transition: width 0.5s, background-color 0.5s;
+}
+
+#load-bar[data-status="primary"] {
+    background-color: var(--color-primary);
+}
+
+#load-bar[data-status="success"] {
+    background-color: var(--color-success);
+}
+
+#load-bar[data-status="warning"] {
+    background-color: var(--color-warning);
+}
+
+#load-bar[data-status="danger"] {
+    background-color: var(--color-danger);
 }
 
 /* 可视化区域样式 */

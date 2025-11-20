@@ -6,7 +6,7 @@ import { getFrameLength } from './modules/calculator.js';
 import { visualizeMessage } from './modules/ui/visualizer.js';
 
 // --- Global State ---
-let canMessages = [];
+const canMessages = [...defaultMessages];
 
 // --- Main Calculation and UI Update ---
 function calculateBusLoad() {
@@ -33,26 +33,30 @@ function calculateBusLoad() {
 	localStorage.setItem("CANbus-Load-Calculator:baudRate", baudRate.toString());
 }
 
+function calculateLoadStatus(load) {
+	if (load > CONSTANTS.LOAD_STATUS_THRESHOLDS.DANGER) {
+		return 'danger';
+	} else if (load > CONSTANTS.LOAD_STATUS_THRESHOLDS.WARNING) {
+		return 'warning';
+	} else if (load > CONSTANTS.LOAD_STATUS_THRESHOLDS.FINE) {
+		return 'success';
+	} else {
+		return 'primary';
+	}
+}
+
 function updateLoadDisplay(minLoad, avgLoad, maxLoad) {
 	elements.minLoadResult.textContent = `${minLoad.toFixed(2)}%`;
 	elements.avgLoadResult.textContent = `${avgLoad.toFixed(2)}%`;
 	elements.maxLoadResult.textContent = `${maxLoad.toFixed(2)}%`;
 
-	const displayLoad = avgLoad;
-	elements.loadBar.style.width = `${Math.min(displayLoad, 100)}%`;
+	elements.loadBar.style.width = `${Math.min(avgLoad, 100)}%`;
 
-	const style = getComputedStyle(document.documentElement);
-	const colorDanger = style.getPropertyValue('--color-danger');
-	const colorWarning = style.getPropertyValue('--color-warning');
-	const colorSuccess = style.getPropertyValue('--color-success');
-	const colorPrimary = style.getPropertyValue('--color-primary');
-
-	if (displayLoad > 90) elements.loadBar.style.backgroundColor = colorDanger;
-	else if (displayLoad > 80) elements.loadBar.style.backgroundColor = colorWarning;
-	else if (displayLoad > 50) elements.loadBar.style.backgroundColor = colorSuccess;
-	else elements.loadBar.style.backgroundColor = colorPrimary;
+	elements.loadBar.setAttribute('data-status', calculateLoadStatus(avgLoad));
+	elements.minLoadResult.setAttribute('data-status', calculateLoadStatus(minLoad));
+	elements.avgLoadResult.setAttribute('data-status', calculateLoadStatus(avgLoad));
+	elements.maxLoadResult.setAttribute('data-status', calculateLoadStatus(maxLoad));
 }
-
 
 // --- Table Row Management ---
 function renderMessageTable() {
@@ -151,7 +155,7 @@ function resetAll() {
 	localStorage.removeItem("CANbus-Load-Calculator:canMessages");
 	localStorage.removeItem("CANbus-Load-Calculator:baudRate");
 	elements.baudRate.value = CONSTANTS.DEFAULT_BAUD_RATE;
-	canMessages = JSON.parse(JSON.stringify(defaultMessages));
+	canMessages.splice(0, canMessages.length, ...defaultMessages);
 	renderMessageTable();
 	calculateBusLoad();
 }
@@ -167,7 +171,7 @@ function validateInputData() {
 	const hasFdcan = canMessages.some(m => m.frameType.startsWith('FDCAN'));
 	const hasClassicCan = canMessages.some(m => m.frameType.startsWith('CAN_'));
 	if (hasFdcan && hasClassicCan) {
-		showError("不允许混合使用经典CAN和FDCAN");
+		showError("不允许混合使用经典 CAN 和 FD CAN");
 		return false;
 	}
 	for (const message of canMessages) {
@@ -186,31 +190,30 @@ function showError(errorMessage) {
 	elements.avgLoadResult.textContent = errorMessage;
 	elements.maxLoadResult.textContent = "错误";
 	elements.loadBar.style.width = "100%";
-	elements.loadBar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-danger');
+	elements.loadBar.setAttribute('data-status', 'danger');
+	elements.minLoadResult.setAttribute('data-status', 'danger');
+	elements.avgLoadResult.setAttribute('data-status', 'danger');
+	elements.maxLoadResult.setAttribute('data-status', 'danger');
 }
-
 
 function loadFromLocalStorage() {
 	try {
 		const savedCanMessages = localStorage.getItem("CANbus-Load-Calculator:canMessages");
 		const savedBaudRate = localStorage.getItem("CANbus-Load-Calculator:baudRate");
-		if (savedCanMessages) {
+		if (savedCanMessages !== null) {
 			const parsedMessages = JSON.parse(savedCanMessages);
 			if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
-				parsedMessages.forEach(m => { if (m.frameType === 'FDCAN') m.frameType = 'FDCAN_STANDARD'; });
-				canMessages = parsedMessages;
+				canMessages.splice(0, canMessages.length, ...parsedMessages);
 			} else {
-				canMessages = JSON.parse(JSON.stringify(defaultMessages));
+				canMessages.splice(0, canMessages.length, ...defaultMessages);
 			}
-		} else {
-			canMessages = JSON.parse(JSON.stringify(defaultMessages));
 		}
-		if (savedBaudRate) elements.baudRate.value = savedBaudRate;
-		else elements.baudRate.value = CONSTANTS.DEFAULT_BAUD_RATE;
+		elements.baudRate.value = savedBaudRate ?? CONSTANTS.DEFAULT_BAUD_RATE;
 	} catch (error) {
+		// 禁止使用 localStorage.clear()，以免误删同域其他数据
 		console.error("Error loading saved data:", error);
-		localStorage.clear();
-		canMessages = JSON.parse(JSON.stringify(defaultMessages));
+		localStorage.removeItem("CANbus-Load-Calculator:canMessages");
+		localStorage.removeItem("CANbus-Load-Calculator:baudRate");
 	}
 }
 
