@@ -20,7 +20,7 @@
             <div class="info-content">
                 <p>感谢 西南石油大学-铁人 制作的
                     <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">Excel
-                        表格</a>，此网页中的算法由 Claude
+                    表格</a>，此网页中的算法由 Claude
                     根据该表格编写，并由 <a href="https://lcwebsite.cn" target="_blank" title="LC的网站">LC</a>
                     人工验证。欢迎为<a href="https://github.com/lc6464/CANbus-Load-Calculator" target="_blank" title="GitHub 存储库">此存储库</a>做出贡献！
                 </p>
@@ -45,7 +45,7 @@
             <!-- 波特率设置 -->
             <div class="baud-rate-container">
                 <label for="baud-rate">波特率 (bps):</label>
-                <input type="number" id="baud-rate" value="1000000" min="1" max="1000000">
+                <input type="number" id="baud-rate" value="1000000" min="1" max="5000000">
             </div>
 
             <!-- CAN消息表格 -->
@@ -56,7 +56,9 @@
                             <th>发送频率 (Hz)</th>
                             <th>数据段长度</th>
                             <th>相同帧数量</th>
+                            <th>CAN 帧类型</th>
                             <th>操作</th>
+                            <th>模拟</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,14 +72,34 @@
             <!-- 结果显示 -->
             <div class="result-container">
                 <h3>总线负载:</h3>
-                <div id="load-result" class="result">0%</div>
+                <div class="load-results">
+                    <div>
+                        <span>最小负载:</span>
+                        <div id="min-load-result" class="result">0%</div>
+                    </div>
+                    <div>
+                        <span>平均负载:</span>
+                        <div id="avg-load-result" class="result">0%</div>
+                    </div>
+                    <div>
+                        <span>最大负载:</span>
+                        <div id="max-load-result" class="result">0%</div>
+                    </div>
+                </div>
                 <div class="status-indicator">
                     <div id="load-bar"></div>
                 </div>
             </div>
         </section>
-    </div>
 
+        <!-- 新增的可视化区域 -->
+        <section class="visualization-section">
+            <h2>通信数据模拟</h2>
+            <div id="visualization-container">
+                <p>点击消息行中的“模拟”按钮来查看单帧数据构成。</p>
+            </div>
+        </section>
+    </div>
 </body>
 
 </html>

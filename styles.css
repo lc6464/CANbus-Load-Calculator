@@ -53,6 +53,11 @@
         /* 阴影 - 深色模式下反色 */
         --shadow-default: 0 0 1.25rem rgba(255, 255, 255, 0.1);
     }
+
+    /* 深色模式下的下拉框箭头 */
+    table select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    }
 }
 
 /* 全局样式 */
@@ -195,6 +200,28 @@ input[type="number"] {
     color: var(--color-text);
 }
 
+/* 科技感下拉框样式 */
+table select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem 2rem 0.5rem 0.5rem; /* 为箭头留出空间 */
+    border: 0.0625rem solid var(--color-input-border);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-card);
+    color: var(--color-text);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.25em 1.25em;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
 button {
     background-color: var(--color-primary);
     color: white;
@@ -226,10 +253,20 @@ button:hover {
     text-align: center;
 }
 
+.load-results {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
+
+.load-results>div {
+    flex: 1;
+}
+
 .result {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    margin: 0.625rem 0;
+    margin: 0.25rem 0;
     color: var(--color-primary);
 }
 
@@ -247,6 +284,67 @@ button:hover {
     background-color: var(--color-success);
     transition: width 0.5s, background-color 0.5s;
 }
+
+/* 可视化区域样式 */
+.visualization-section {
+    margin-top: 2rem;
+}
+
+#visualization-container {
+    background-color: var(--color-section-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-md);
+    min-height: 100px;
+    transition: all 0.3s;
+}
+
+.visualization h4 {
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+}
+
+.bit-stream-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* 允许换行 */
+    padding: 1rem 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.bit-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 28px;
+    height: 42px;
+    border: 1px solid var(--color-border);
+    padding: 2px 0;
+    font-size: 0.7rem;
+    text-align: center;
+    flex-shrink: 0; /* 防止bit被压缩 */
+}
+
+.bit-label {
+    color: var(--color-text-light);
+    font-size: 0.6rem;
+    line-height: 1;
+}
+
+.bit-value {
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.visualize-button {
+    background-color: var(--color-success);
+}
+
+.visualize-button:hover {
+    background-color: #45a049;
+}
+
 
 /* 响应式设计 */
 @media (max-width: 48rem) { /* 768px */
@@ -287,7 +385,8 @@ button:hover {
 
 /* 焦点状态增强可访问性 */
 input:focus,
-button:focus {
+button:focus,
+select:focus {
     outline: 0.1875rem solid var(--color-primary);
     outline-offset: 0.125rem;
 }
