@@ -7,7 +7,7 @@ export function getFrameLength(frameType, dataLength) {
 	let stuffableOverhead = 0;
 	const fixedBits = 1 + 1 + 2 + 7 + 3; // SOF, CRC Del, ACK(Slot+Del), EOF, IFS
 	let dataBits = dataLength * 8;
-	let dlcVal = dataLength;
+	let dlcVal;
 
 	switch (frameType) {
 		case 'CAN_STANDARD':
