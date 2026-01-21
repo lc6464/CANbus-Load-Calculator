@@ -44,8 +44,8 @@ function applyBitStuffing(bitObjects) {
 		if (consecutiveCount === 5) {
 			const stuffBitValue = lastBitValue === '1' ? '0' : '1';
 			stuffed.push({ value: stuffBitValue, label: '填充', type: 'STUFF' });
-			consecutiveCount = 0;
-			lastBitValue = -1;
+			consecutiveCount = 1;
+			lastBitValue = stuffBitValue;
 		}
 	}
 	return stuffed;
