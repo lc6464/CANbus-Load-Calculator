@@ -1,6 +1,6 @@
 // modules/calculator.js
 
-import { CONSTANTS, DLC_TO_LENGTH } from './config.js';
+import { DLC_TO_LENGTH } from './config.js';
 
 // --- Unified Frame Length Calculation ---
 export function getFrameLength(frameType, dataLength) {
