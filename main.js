@@ -196,15 +196,32 @@ function showError(errorMessage) {
 	elements.maxLoadResult.setAttribute('data-status', 'danger');
 }
 
+/**
+ * Validate that loaded messages from localStorage have the expected structure.
+ * In particular, each message must have a string `frameType` so that
+ * code using `message.frameType.startsWith(...)` does not throw.
+ */
+function isValidSavedMessagesArray(messages) {
+	if (!Array.isArray(messages) || messages.length === 0) {
+		return false;
+	}
+	return messages.every(msg =>
+		msg &&
+		typeof msg === 'object' &&
+		typeof msg.frameType === 'string'
+	);
+}
+
 function loadFromLocalStorage() {
 	try {
 		const savedCanMessages = localStorage.getItem("CANbus-Load-Calculator:canMessages");
 		const savedBaudRate = localStorage.getItem("CANbus-Load-Calculator:baudRate");
 		if (savedCanMessages !== null) {
 			const parsedMessages = JSON.parse(savedCanMessages);
-			if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+			if (isValidSavedMessagesArray(parsedMessages)) {
 				canMessages.splice(0, canMessages.length, ...parsedMessages);
 			} else {
+				// Fallback to defaults if the stored structure is incompatible
 				canMessages.splice(0, canMessages.length, ...defaultMessages);
 			}
 		}
