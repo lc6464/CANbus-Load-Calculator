@@ -169,6 +169,10 @@ function resetAll() {
 // --- Initialization ---
 function validateInputData() {
 	const baudRate = parseFloat(elements.baudRate.value) || 0;
+	if (baudRate <= 0) {
+		showError("波特率必须大于 0");
+		return false;
+	}
 	if (baudRate > CONSTANTS.MAX_BAUD_RATE) {
 		showError(`波特率超出上限 (${CONSTANTS.MAX_BAUD_RATE})`);
 		return false;
