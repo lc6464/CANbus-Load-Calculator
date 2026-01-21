@@ -32,6 +32,8 @@ export function getFrameLength(frameType, dataLength) {
 			stuffableOverhead = 11 + 1 + 1 + 18 + 1 + 1 + 1 + 1 + 4 + 4 + crcBitCount; // BaseID, SRR, IDE, ExtID, FDF, r, BRS, ESI, DLC, StuffCount, CRC
 			break;
 		}
+		default:
+			throw new Error(`Unsupported frame type: ${String(frameType)}`);
 	}
 
 	const stuffableBits = stuffableOverhead + dataBits;
