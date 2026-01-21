@@ -69,19 +69,19 @@ function renderMessageTable() {
 		const isFd = message.frameType.startsWith('FDCAN');
 		const maxDataLength = isFd ? CONSTANTS.MAX_FDCAN_DATA_LENGTH : CONSTANTS.MAX_DATA_LENGTH;
 		row.innerHTML = `
-			<td><input type="number" class="frequency" value="${message.frequency}" min="0" step="1"></td>
-			<td><input type="number" class="dataLength" value="${message.dataLength}" min="0" max="${maxDataLength}" step="1"></td>
-			<td><input type="number" class="frameCount" value="${message.frameCount}" min="1" step="1"></td>
+			<td><input type="number" class="frequency" value="${message.frequency}" min="0" step="1" aria-label="消息频率（Hz）"></td>
+			<td><input type="number" class="dataLength" value="${message.dataLength}" min="0" max="${maxDataLength}" step="1" aria-label="数据长度（字节）"></td>
+			<td><input type="number" class="frameCount" value="${message.frameCount}" min="1" step="1" aria-label="每个周期发送的帧数"></td>
 			<td>
-				<select class="frameType">
+				<select class="frameType" aria-label="选择 CAN 帧类型">
 					<option value="CAN_STANDARD" ${message.frameType === "CAN_STANDARD" ? "selected" : ""}>CAN 标准帧</option>
 					<option value="CAN_EXTENDED" ${message.frameType === "CAN_EXTENDED" ? "selected" : ""}>CAN 扩展帧</option>
 					<option value="FDCAN_STANDARD" ${message.frameType === "FDCAN_STANDARD" ? "selected" : ""}>CAN FD 标准帧</option>
 					<option value="FDCAN_EXTENDED" ${message.frameType === "FDCAN_EXTENDED" ? "selected" : ""}>CAN FD 扩展帧</option>
 				</select>
 			</td>
-			<td><button class="delete-button" data-index="${index}" ${disabled}>删除</button></td>
-			<td><button class="visualize-button" data-index="${index}">模拟</button></td>
+			<td><button class="delete-button" data-index="${index}" ${disabled} aria-label="删除此 CAN 消息">删除</button></td>
+			<td><button class="visualize-button" data-index="${index}" aria-label="模拟此 CAN 消息的总线负载">模拟</button></td>
 		`;
 		tableBody.appendChild(row);
 	});
@@ -100,22 +100,27 @@ function deleteRow(index) {
 	calculateBusLoad();
 }
 
-function updateMessage(index, inputs) {
-	const frameType = inputs[3].value;
-	let dataLength = parseFloat(inputs[1].value) || 0;
+function updateMessage(index, row) {
+	const frequencyInput = row.querySelector('.frequency');
+	const dataLengthInput = row.querySelector('.dataLength');
+	const frameCountInput = row.querySelector('.frameCount');
+	const frameTypeSelect = row.querySelector('.frameType');
+	
+	const frameType = frameTypeSelect.value;
+	let dataLength = parseFloat(dataLengthInput.value) || 0;
 	const isFd = frameType.startsWith('FDCAN');
 	const maxDataLength = isFd ? CONSTANTS.MAX_FDCAN_DATA_LENGTH : CONSTANTS.MAX_DATA_LENGTH;
 	if (dataLength > maxDataLength) {
 		dataLength = maxDataLength;
-		inputs[1].value = maxDataLength;
+		dataLengthInput.value = maxDataLength;
 	}
 	canMessages[index] = {
-		frequency: parseFloat(inputs[0].value) || 0,
+		frequency: parseFloat(frequencyInput.value) || 0,
 		dataLength: dataLength,
-		frameCount: parseFloat(inputs[2].value) || 1,
+		frameCount: parseFloat(frameCountInput.value) || 1,
 		frameType: frameType
 	};
-	inputs[1].setAttribute('max', maxDataLength);
+	dataLengthInput.setAttribute('max', maxDataLength);
 	calculateBusLoad();
 }
 
@@ -126,7 +131,7 @@ function handleTableChange(event) {
 		const row = event.target.closest("tr");
 		const rowIndex = Array.from(row.parentNode.children).indexOf(row);
 		if (rowIndex !== -1) {
-			updateMessage(rowIndex, row.querySelectorAll("input, select"));
+			updateMessage(rowIndex, row);
 		}
 	}
 }
@@ -136,7 +141,7 @@ function handleTableInput(event) {
 		const row = event.target.closest("tr");
 		const rowIndex = Array.from(row.parentNode.children).indexOf(row);
 		if (rowIndex !== -1) {
-			updateMessage(rowIndex, row.querySelectorAll("input, select"));
+			updateMessage(rowIndex, row);
 		}
 	}
 }
@@ -164,12 +169,16 @@ function resetAll() {
 // --- Initialization ---
 function validateInputData() {
 	const baudRate = parseFloat(elements.baudRate.value) || 0;
+	if (baudRate <= 0) {
+		showError("波特率必须大于 0");
+		return false;
+	}
 	if (baudRate > CONSTANTS.MAX_BAUD_RATE) {
 		showError(`波特率超出上限 (${CONSTANTS.MAX_BAUD_RATE})`);
 		return false;
 	}
 	const hasFdcan = canMessages.some(m => m.frameType.startsWith('FDCAN'));
-	const hasClassicCan = canMessages.some(m => m.frameType.startsWith('CAN_'));
+	const hasClassicCan = canMessages.some(m => !m.frameType.startsWith('FDCAN'));
 	if (hasFdcan && hasClassicCan) {
 		showError("不允许混合使用经典 CAN 和 FD CAN");
 		return false;
@@ -196,15 +205,32 @@ function showError(errorMessage) {
 	elements.maxLoadResult.setAttribute('data-status', 'danger');
 }
 
+/**
+ * Validate that loaded messages from localStorage have the expected structure.
+ * In particular, each message must have a string `frameType` so that
+ * code using `message.frameType.startsWith(...)` does not throw.
+ */
+function isValidSavedMessagesArray(messages) {
+	if (!Array.isArray(messages) || messages.length === 0) {
+		return false;
+	}
+	return messages.every(msg =>
+		msg &&
+		typeof msg === 'object' &&
+		typeof msg.frameType === 'string'
+	);
+}
+
 function loadFromLocalStorage() {
 	try {
 		const savedCanMessages = localStorage.getItem("CANbus-Load-Calculator:canMessages");
 		const savedBaudRate = localStorage.getItem("CANbus-Load-Calculator:baudRate");
 		if (savedCanMessages !== null) {
 			const parsedMessages = JSON.parse(savedCanMessages);
-			if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+			if (isValidSavedMessagesArray(parsedMessages)) {
 				canMessages.splice(0, canMessages.length, ...parsedMessages);
 			} else {
+				// Fallback to defaults if the stored structure is incompatible
 				canMessages.splice(0, canMessages.length, ...defaultMessages);
 			}
 		}

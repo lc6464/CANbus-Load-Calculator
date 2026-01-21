@@ -1,13 +1,13 @@
 // modules/calculator.js
 
-import { CONSTANTS, DLC_TO_LENGTH } from './config.js';
+import { DLC_TO_LENGTH } from './config.js';
 
 // --- Unified Frame Length Calculation ---
 export function getFrameLength(frameType, dataLength) {
 	let stuffableOverhead = 0;
 	const fixedBits = 1 + 1 + 2 + 7 + 3; // SOF, CRC Del, ACK(Slot+Del), EOF, IFS
 	let dataBits = dataLength * 8;
-	let dlcVal = dataLength;
+	let dlcVal;
 
 	switch (frameType) {
 		case 'CAN_STANDARD':
@@ -32,6 +32,8 @@ export function getFrameLength(frameType, dataLength) {
 			stuffableOverhead = 11 + 1 + 1 + 18 + 1 + 1 + 1 + 1 + 4 + 4 + crcBitCount; // BaseID, SRR, IDE, ExtID, FDF, r, BRS, ESI, DLC, StuffCount, CRC
 			break;
 		}
+		default:
+			throw new Error(`Unsupported frame type: ${String(frameType)}`);
 	}
 
 	const stuffableBits = stuffableOverhead + dataBits;

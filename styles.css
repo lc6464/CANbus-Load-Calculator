@@ -421,27 +421,27 @@ button:hover {
 }
 
 .bit-cell[data-type="DATA"][data-alt="true"] {
-    background-color: var(--color-canmessage-visualizer-bit-data-alt) ;
+    background-color: var(--color-canmessage-visualizer-bit-data-alt);
 }
 
 .bit-cell[data-type="CRC"] {
-    background-color: var(--color-canmessage-visualizer-bit-crc) ;
+    background-color: var(--color-canmessage-visualizer-bit-crc);
 }
 
 .bit-cell[data-type="ACK"] {
-    background-color: var(--color-canmessage-visualizer-bit-ack) ;
+    background-color: var(--color-canmessage-visualizer-bit-ack);
 }
 
 .bit-cell[data-type="EOF"] {
-    background-color: var(--color-canmessage-visualizer-bit-eof) ;
+    background-color: var(--color-canmessage-visualizer-bit-eof);
 }
 
 .bit-cell[data-type="IFS"] {
-    background-color: var(--color-canmessage-visualizer-bit-ifs) ;
+    background-color: var(--color-canmessage-visualizer-bit-ifs);
 }
 
 .bit-cell[data-type="STUFF"] {
-    background-color: var(--color-canmessage-visualizer-bit-stuff) ;
+    background-color: var(--color-canmessage-visualizer-bit-stuff);
 }
 
 
