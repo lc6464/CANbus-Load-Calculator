@@ -4,7 +4,11 @@
 
 > 算法来源于 <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">RoboMaster 论坛</a>。
 
-感谢 **西南石油大学-铁人** 制作的 Excel 表格，此网页中的算法由 Claude 根据该表格编写，并由 <a href="https://lcwebsite.cn" target="_blank" title="LC的网站">LC</a> 人工验证。
+贡献者（时间顺序）：
+- [西南石油大学-铁人](https://github.com/CaFeZn)
+- [LC](https://github.com/lc6464)
+- [MeroT](https://github.com/tearncolour)
+
 欢迎为[此存储库](https://github.com/lc6464/CANbus-Load-Calculator "GitHub 存储库")做出贡献！
 
 ### 工具说明：
