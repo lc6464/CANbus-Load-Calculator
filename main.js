@@ -169,7 +169,7 @@ function validateInputData() {
 		return false;
 	}
 	const hasFdcan = canMessages.some(m => m.frameType.startsWith('FDCAN'));
-	const hasClassicCan = canMessages.some(m => m.frameType.startsWith('CAN_'));
+	const hasClassicCan = canMessages.some(m => !m.frameType.startsWith('FDCAN'));
 	if (hasFdcan && hasClassicCan) {
 		showError("不允许混合使用经典 CAN 和 FD CAN");
 		return false;
