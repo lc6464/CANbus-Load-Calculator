@@ -100,22 +100,27 @@ function deleteRow(index) {
 	calculateBusLoad();
 }
 
-function updateMessage(index, inputs) {
-	const frameType = inputs[3].value;
-	let dataLength = parseFloat(inputs[1].value) || 0;
+function updateMessage(index, row) {
+	const frequencyInput = row.querySelector('.frequency');
+	const dataLengthInput = row.querySelector('.dataLength');
+	const frameCountInput = row.querySelector('.frameCount');
+	const frameTypeSelect = row.querySelector('.frameType');
+	
+	const frameType = frameTypeSelect.value;
+	let dataLength = parseFloat(dataLengthInput.value) || 0;
 	const isFd = frameType.startsWith('FDCAN');
 	const maxDataLength = isFd ? CONSTANTS.MAX_FDCAN_DATA_LENGTH : CONSTANTS.MAX_DATA_LENGTH;
 	if (dataLength > maxDataLength) {
 		dataLength = maxDataLength;
-		inputs[1].value = maxDataLength;
+		dataLengthInput.value = maxDataLength;
 	}
 	canMessages[index] = {
-		frequency: parseFloat(inputs[0].value) || 0,
+		frequency: parseFloat(frequencyInput.value) || 0,
 		dataLength: dataLength,
-		frameCount: parseFloat(inputs[2].value) || 1,
+		frameCount: parseFloat(frameCountInput.value) || 1,
 		frameType: frameType
 	};
-	inputs[1].setAttribute('max', maxDataLength);
+	dataLengthInput.setAttribute('max', maxDataLength);
 	calculateBusLoad();
 }
 
@@ -126,7 +131,7 @@ function handleTableChange(event) {
 		const row = event.target.closest("tr");
 		const rowIndex = Array.from(row.parentNode.children).indexOf(row);
 		if (rowIndex !== -1) {
-			updateMessage(rowIndex, row.querySelectorAll("input, select"));
+			updateMessage(rowIndex, row);
 		}
 	}
 }
@@ -136,7 +141,7 @@ function handleTableInput(event) {
 		const row = event.target.closest("tr");
 		const rowIndex = Array.from(row.parentNode.children).indexOf(row);
 		if (rowIndex !== -1) {
-			updateMessage(rowIndex, row.querySelectorAll("input, select"));
+			updateMessage(rowIndex, row);
 		}
 	}
 }
