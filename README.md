@@ -5,7 +5,7 @@
 > 算法来源于 <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">RoboMaster 论坛</a>。
 
 贡献者（时间顺序）：
-- [西南石油大学-铁人](https://github.com/CaFeZn)
+- [CaFeZn](https://github.com/CaFeZn)
 - [LC](https://github.com/lc6464)
 - [MeroT](https://github.com/tearncolour)
 
