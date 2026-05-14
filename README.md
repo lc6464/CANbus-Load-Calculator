@@ -2,7 +2,7 @@
 
 [点此进入计算器](https://lc6464.github.io/CANbus-Load-Calculator/ "GitHub Pages")
 
-> 算法来源于 <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">RoboMaster 论坛</a>。
+> 算法来源于 <a href="https://bbs.robomaster.com/article/557395" target="_blank" title="RoboMaster 论坛相关文章">RoboMaster 论坛</a>，文章里有详细分析。
 
 贡献者（时间顺序）：
 - [CaFeZn](https://github.com/CaFeZn)
